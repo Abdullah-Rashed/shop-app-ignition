@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:shop_app/app/get_it/get_it.dart';
 import 'package:shop_app/common/components/fields/my_form_field.dart';
 import 'package:shop_app/common/services/router/app_router.dart';
-import 'package:shop_app/common/services/router/image_picker/image_picker_service.dart';
+import 'package:shop_app/common/services/image_picker/image_picker_service.dart';
 import 'package:shop_app/common/theme/colors.dart';
 import 'package:shop_app/common/utils/validators.dart';
 import 'package:shop_app/features/auth/controller/cubit.dart';
@@ -22,7 +22,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final authCubit = serviceLocator<AuthCubit>();
-  final imagePickerService = serviceLocator<ImagePickerService>();
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -51,98 +50,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ],
             ),
             Gap(20),
-            BlocBuilder<AuthCubit, AuthStates>(
-              builder: (context, state) => Column(
-                children: [
-                  Form(
-                    key: authCubit.registerFormKey,
-                    child: Column(
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: authCubit.imageFile != null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(70),
-                                      child: Image.file(
-                                        authCubit.imageFile!,
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ),
-                            GestureDetector(
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ListTile(
-                                        leading: Icon(Icons.photo),
-                                        title: Text("Gallery"),
-                                        onTap: () {
-                                          authCubit.pickImage(
-                                              source: "gallery");
-                                        },
-                                      ),
-                                      ListTile(
-                                        leading: Icon(Icons.camera_alt),
-                                        title: Text("Camera"),
-                                        onTap: () {
-                                          authCubit.pickImage(source: "camera");
-                                        },
-                                      ),
-                                    ],
-                                  ),
+            Column(
+              children: [
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    BlocBuilder<AuthCubit, AuthStates>(
+                      bloc: authCubit,
+                      builder: (context, state) => Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: authCubit.imageFile != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(70),
+                                child: Image.file(
+                                  authCubit.imageFile!,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                              ),
-                              child: CircleAvatar(child: Icon(Icons.add)),
-                            ),
-                          ],
-                        ),
-                        MyFormField(
-                          controller: authCubit.registerNameController,
-                          label: "Name",
-                          prefixIcon: Icon(Icons.person_2),
-                          validator: (value) =>
-                              Validators.validateRequiredField(
-                            value: authCubit.registerNameController.text,
-                          ),
-                        ),
-                        Gap(20),
-                        MyFormField(
-                          controller: authCubit.registerEmailController,
-                          label: "Email",
-                          prefixIcon: Icon(Icons.mail),
-                          validator: (value) => Validators.validateEmail(
-                            email: authCubit.registerEmailController.text,
-                          ),
-                        ),
-                        Gap(20),
-                        MyFormField(
-                          controller: authCubit.registerPwdController,
-                          label: "Password",
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: Icon(Icons.visibility),
-                          validator: (value) => Validators.validatePassword(
-                            pwd: authCubit.registerPwdController.text,
-                          ),
-                        ),
-                      ],
+                              )
+                            : SizedBox.shrink(),
+                      ),
                     ),
+                    GestureDetector(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.photo),
+                                title: Text("Gallery"),
+                                onTap: () {
+                                  authCubit.pickImage(
+                                    source: "gallery",
+                                  );
+                                  AppRouter.pop();
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.camera_alt),
+                                title: Text("Camera"),
+                                onTap: () {
+                                  authCubit.pickImage(
+                                    source: "camera",
+                                  );
+                                  AppRouter.pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      child: CircleAvatar(child: Icon(Icons.add)),
+                    ),
+                  ],
+                ),
+                Form(
+                  key: authCubit.registerFormKey,
+                  child: Column(
+                    children: [
+                      MyFormField(
+                        controller: authCubit.registerNameController,
+                        label: "Name",
+                        prefixIcon: Icon(Icons.person_2),
+                        validator: (value) => Validators.validateRequiredField(
+                          value: authCubit.registerNameController.text,
+                        ),
+                      ),
+                      Gap(20),
+                      MyFormField(
+                        controller: authCubit.registerEmailController,
+                        label: "Email",
+                        prefixIcon: Icon(Icons.mail),
+                        validator: (value) => Validators.validateEmail(
+                          email: authCubit.registerEmailController.text,
+                        ),
+                      ),
+                      Gap(20),
+                      MyFormField(
+                        controller: authCubit.registerPwdController,
+                        label: "Password",
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: Icon(Icons.visibility),
+                        validator: (value) => Validators.validatePassword(
+                          pwd: authCubit.registerPwdController.text,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Gap(20),
             Column(
@@ -239,6 +243,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
-    ;
   }
 }
