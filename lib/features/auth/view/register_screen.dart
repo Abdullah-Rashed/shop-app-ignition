@@ -61,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: 100,
                         height: 100,
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
+                          color: MyLightColors.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: authCubit.imageFile != null
@@ -108,7 +108,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      child: CircleAvatar(child: Icon(Icons.add)),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -139,8 +145,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Password",
                         prefixIcon: Icon(Icons.lock),
                         suffixIcon: Icon(Icons.visibility),
-                        validator: (value) => Validators.validatePassword(
-                          pwd: authCubit.registerPwdController.text,
+                        validator: (value) =>
+                            Validators.validateRequiredFieldWithLength(
+                          value: authCubit.registerPwdController.text,
+                          length: 4,
                         ),
                       ),
                     ],
@@ -157,12 +165,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: FilledButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          WidgetStatePropertyAll(AppColors.primaryColor),
+                          WidgetStatePropertyAll(MyLightColors.primaryColor),
                     ),
                     onPressed: () {
                       if (authCubit.registerFormKey.currentState?.validate() ==
                           true) {
-                        //? register function;
+                        authCubit.register(
+                          name: authCubit.registerNameController.text.trim(),
+                          email: authCubit.registerEmailController.text.trim(),
+                          pwd: authCubit.registerPwdController.text.trim(),
+                          avatar: authCubit.imageFile?.path,
+                        );
                       }
                     },
                     child: Text("Register"),

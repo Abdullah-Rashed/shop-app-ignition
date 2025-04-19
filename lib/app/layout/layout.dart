@@ -40,7 +40,7 @@ class _LayoutState extends State<Layout> {
             item: ItemConfig(
               icon: Icon(Icons.shop),
               inactiveIcon: Icon(Icons.shop_outlined),
-              activeForegroundColor: AppColors.primaryColor,
+              activeForegroundColor: MyLightColors.primaryColor,
               inactiveForegroundColor: Color(0XFF0F0E0E),
               title: "Shop",
             ),
@@ -50,7 +50,7 @@ class _LayoutState extends State<Layout> {
             item: ItemConfig(
               icon: Icon(Icons.person_3),
               inactiveIcon: Icon(Icons.person_3_outlined),
-              activeForegroundColor: AppColors.primaryColor,
+              activeForegroundColor: MyLightColors.primaryColor,
               inactiveForegroundColor: Color(0XFF0F0E0E),
               title: "Account",
             ),
