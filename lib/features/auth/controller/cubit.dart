@@ -6,8 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:shop_app/app/app_cubit/cubit.dart';
 import 'package:shop_app/app/get_it/get_it.dart';
+import 'package:shop_app/app/layout/layout.dart';
 import 'package:shop_app/common/dialogs/loading_dialog.dart';
 import 'package:shop_app/common/models/error_model.dart';
+import 'package:shop_app/common/models/usaer_info_model.dart';
 import 'package:shop_app/common/network/client.dart';
 import 'package:shop_app/common/network/endpoints.dart';
 import 'package:shop_app/common/services/image_picker/image_picker_service.dart';
@@ -68,7 +70,8 @@ class AuthCubit extends Cubit<AuthStates> {
     ).then((response) {
       appCubit.hideDialog();
       if (response.statusCode == 201) {
-        // RegistterModel registterModel = RegistterModel.fromMap(response.data);
+        RegistterModel registterModel = RegistterModel.fromMap(response.data);
+        SharedPrefs.setInt("userId", registterModel.id ?? 0);
         //TODO move the saving of user data into login() and hit the retrieve user profile API
         // SharedPrefs.setString("userImage", "${registterModel.avatar}");
         // SharedPrefs.setString("username", "${registterModel.name}");
@@ -92,6 +95,28 @@ class AuthCubit extends Cubit<AuthStates> {
     //? Error state
   }
 
+  UserInfoModel? userInfoModel;
+  Future getUserInfo() async {
+    emit(GetUserInfoLoadingState());
+    dioClient
+        .get(
+      "${EndPoints.getUserInfo}${SharedPrefs.getInt("userId")}",
+    )
+        .then(
+      (response) {
+        if (response.statusCode == 200) {
+          userInfoModel = UserInfoModel.fromMap(response.data);
+          emit(GetUserInfoSuccessState());
+        }
+      },
+    ).catchError((error) {
+      logger.e(error);
+      emit(GetUserInfoErrorState(
+        msg: error.toString(),
+      ));
+    });
+  }
+
   void login() {
     emit(LoginLoadingState());
     appCubit.showLoadingDialog();
@@ -101,12 +126,15 @@ class AuthCubit extends Cubit<AuthStates> {
         "email": loginEmailController.text.trim(),
         "password": loginPwdController.text.trim(),
       },
-    ).then((response) {
+    ).then((response) async {
       appCubit.hideDialog();
       if (response.statusCode == 201) {
         LoginModel loginModel = LoginModel.fromMap(response.data);
         SharedPrefs.setString("accessToken", "${loginModel.accessToken}");
-        AppRouter.pushReplace(screen: HomeScreen());
+        loginEmailController.clear();
+        loginPwdController.clear();
+        await getUserInfo();
+        AppRouter.pushReplace(screen: Layout());
         emit(LoginSuccessState());
       } else {
         if (response.statusCode == 401) {

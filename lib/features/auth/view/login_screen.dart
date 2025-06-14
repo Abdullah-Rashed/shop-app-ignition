@@ -11,8 +11,21 @@ import 'package:shop_app/features/auth/controller/cubit.dart';
 import 'package:shop_app/features/auth/controller/states.dart';
 import 'package:shop_app/features/auth/view/register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void dispose() {
+    super.dispose();
+    final authCubit = serviceLocator<AuthCubit>();
+    authCubit.loginEmailController.clear();
+    authCubit.loginPwdController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +42,9 @@ class LoginScreen extends StatelessWidget {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+            ),
             body: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               children: [

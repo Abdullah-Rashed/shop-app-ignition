@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/app/app_cubit/cubit.dart';
+import 'package:shop_app/app/get_it/get_it.dart';
 import 'package:shop_app/common/theme/colors.dart';
+import 'package:shop_app/features/home/models/product_model.dart';
 
 class AddToCartButton extends StatelessWidget {
-  const AddToCartButton({super.key});
+  final ProductsModel? product;
+  const AddToCartButton({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //? Add to cart
+        serviceLocator<AppCubit>().addToCart(item: product);
       },
       child: Container(
         padding: EdgeInsets.all(8),

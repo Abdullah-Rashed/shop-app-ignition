@@ -7,5 +7,8 @@ class EndPoints {
   static const prodUrl = baseUrl;
   static const apiUrl = testingUrl;
   static const register = "$apiUrl/users/";
+  static const getUserInfo = "$apiUrl/users/";
   static const login = "$apiUrl/auth/login";
+  static const getCategories = "$apiUrl/categories";
+  static const getProducts = "$apiUrl/products";
 }

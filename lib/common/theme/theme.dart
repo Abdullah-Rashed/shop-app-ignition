@@ -6,6 +6,7 @@ class MyThemes {
   static ThemeData lightTheme = ThemeData(
     textTheme: MyTextTheme.lightTextTheme,
     colorScheme: ColorScheme.fromSeed(
+      brightness: Brightness.light,
       seedColor: MyLightColors.primaryColor,
       primaryContainer: MyLightColors.primaryColor,
       onPrimaryContainer: MyLightColors.onPrimaryContainer,
@@ -44,6 +45,7 @@ class MyThemes {
     ),
     textTheme: MyTextTheme.darkTextTheme,
     colorScheme: ColorScheme.fromSeed(
+      brightness: Brightness.dark,
       seedColor: MyDarkColors.primaryColor,
       primaryContainer: MyDarkColors.primaryColor,
       onPrimaryContainer: MyDarkColors.onPrimaryContainer,

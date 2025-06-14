@@ -29,3 +29,16 @@ class LoginErrorState extends AuthStates {
     this.msg = "Something went wrong",
   });
 }
+
+class GetUserInfoLoadingState extends AuthStates {}
+
+class GetUserInfoSuccessState extends AuthStates {}
+
+class GetUserInfoErrorState extends AuthStates {
+  final int code;
+  final String msg;
+  GetUserInfoErrorState({
+    this.code = 9000,
+    this.msg = "Something went wrong",
+  });
+}

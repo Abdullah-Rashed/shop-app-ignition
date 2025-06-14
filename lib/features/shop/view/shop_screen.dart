@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ShopScreen extends StatefulWidget {
-  const ShopScreen({super.key});
+class WishListScreen extends StatefulWidget {
+  const WishListScreen({super.key});
 
   @override
-  State<ShopScreen> createState() => _ShopScreenState();
+  State<WishListScreen> createState() => _WishListScreenState();
 }
 
-class _ShopScreenState extends State<ShopScreen> {
+class _WishListScreenState extends State<WishListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold();

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "827836385503",
+    "project_id": "ignition-shop",
+    "storage_bucket": "ignition-shop.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827836385503:android:6728c79ad3afda3272016a",
+        "android_client_info": {
+          "package_name": "com.ignition.shop_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPIrqX2Gj6q0dcb5eaQ7QtVC32xjoMOoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

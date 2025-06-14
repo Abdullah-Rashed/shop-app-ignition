@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:shop_app/app/app_cubit/cubit.dart';
+import 'package:shop_app/app/get_it/get_it.dart';
 import 'package:shop_app/common/theme/colors.dart';
 import 'package:shop_app/features/account/view/account_screen.dart';
 import 'package:shop_app/features/home/view/home_screen.dart';
@@ -16,7 +18,7 @@ class _LayoutState extends State<Layout> {
   final controller = PersistentTabController();
   List<Widget> screens = [
     HomeScreen(),
-    ShopScreen(),
+    WishListScreen(),
     AccountScreen(),
   ];
   @override
@@ -30,35 +32,58 @@ class _LayoutState extends State<Layout> {
             item: ItemConfig(
               icon: Icon(Icons.home),
               inactiveIcon: Icon(Icons.home_outlined),
-              activeForegroundColor: Color(0XFFFF660E),
-              inactiveForegroundColor: Color(0XFF0F0E0E),
+              activeForegroundColor: MyLightColors.primaryColor,
+              inactiveForegroundColor: serviceLocator<AppCubit>().isDarkMode
+                  ? Colors.white
+                  : Colors.black,
               title: "Home",
             ),
           ),
+          // PersistentTabConfig(
+          //   screen: ShopScreen(),
+          //   item: ItemConfig(
+          //     icon: Icon(Icons.shop),
+          //     inactiveIcon: Icon(Icons.shop_outlined),
+          //     activeForegroundColor: MyLightColors.primaryColor,
+          //     inactiveForegroundColor: serviceLocator<AppCubit>().isDarkMode
+          //         ? Colors.white
+          //         : Colors.black,
+          //     title: "Shopping",
+          //   ),
+          // ),
           PersistentTabConfig(
-            screen: ShopScreen(),
+            screen: WishListScreen(),
             item: ItemConfig(
-              icon: Icon(Icons.shop),
-              inactiveIcon: Icon(Icons.shop_outlined),
+              icon: Icon(Icons.favorite),
+              inactiveIcon: Icon(Icons.favorite_outline),
               activeForegroundColor: MyLightColors.primaryColor,
-              inactiveForegroundColor: Color(0XFF0F0E0E),
-              title: "Shop",
+              inactiveForegroundColor: serviceLocator<AppCubit>().isDarkMode
+                  ? Colors.white
+                  : Colors.black,
+              title: "Wishlist",
             ),
           ),
           PersistentTabConfig(
-            screen: ShopScreen(),
+            screen: WishListScreen(),
             item: ItemConfig(
               icon: Icon(Icons.person_3),
               inactiveIcon: Icon(Icons.person_3_outlined),
               activeForegroundColor: MyLightColors.primaryColor,
-              inactiveForegroundColor: Color(0XFF0F0E0E),
+              inactiveForegroundColor: serviceLocator<AppCubit>().isDarkMode
+                  ? Colors.white
+                  : Colors.black,
               title: "Account",
             ),
           ),
         ],
-        navBarBuilder: (navBarConfig) => Style1BottomNavBar(
-          navBarConfig: navBarConfig,
-          navBarDecoration: NavBarDecoration(),
+        navBarBuilder: (navBarConfig) => Padding(
+          padding: EdgeInsets.only(bottom: 6),
+          child: Style1BottomNavBar(
+            navBarConfig: navBarConfig,
+            navBarDecoration: NavBarDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          ),
         ),
       ),
     );

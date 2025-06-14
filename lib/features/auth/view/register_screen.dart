@@ -22,6 +22,14 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final authCubit = serviceLocator<AuthCubit>();
+
+  void dispose() {
+    super.dispose();
+    authCubit.registerEmailController.clear();
+    authCubit.registerPwdController.clear();
+    authCubit.registerNameController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
